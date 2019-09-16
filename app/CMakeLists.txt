@@ -5,7 +5,11 @@
 #     Tmaths
 # )
 
-add_executable(computor src/main.cpp)
+add_executable(computor 
+		src/main.cpp
+		src/Computor.cpp
+)
+
 target_link_libraries(computor
 		Tmaths
 )
