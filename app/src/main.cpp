@@ -18,4 +18,19 @@ int main(int argv, char **args)
 	std::cout << "sqrt: 0.1 ^ 0.5 = " << Tmaths::sqrt(0.1) << std::endl;
 	std::cout << "sqrt: 0.01 ^ 0.5 = " << Tmaths::sqrt(0.01) << std::endl;
 	std::cout << "sqrt: -5 ^ 0.5 = " << Tmaths::sqrt(0.00000000000000000000000000000000000000000000000000000000000001) << std::endl;
+	std::cout << std::endl;
+	// x intercepts
+	intercept_st intercept = Tmaths::calcIntercept(-1, 0, 1);
+	std::cout << "roots -x2 + 1:" << std::endl;
+	std::cout << "num intercepts: " << intercept.numIntercepts << std::endl << "intercepts: " << intercept.intercepts[0] << " " << intercept.intercepts[1] << std::endl;
+	std::cout << std::endl;
+	intercept = Tmaths::calcIntercept(0, 1, 1);
+	std::cout << "roots 1x + 1:" << std::endl;
+	std::cout << "num intercepts: " << intercept.numIntercepts << std::endl << "intercepts: " << intercept.intercepts[0] << std::endl;
+	std::cout << std::endl;
+	intercept = Tmaths::calcIntercept(1, 0, 1);
+	std::cout << "roots x2 + 1:" << std::endl;
+	std::cout << "num intercepts: " << intercept.numIntercepts << std::endl;
+	std::cout << std::endl;
+
 }

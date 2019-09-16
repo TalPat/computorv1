@@ -108,3 +108,31 @@ double Tmaths::abs(double val)
 		return (val * -1);
 	return (val);
 }
+
+intercept_st Tmaths::calcIntercept(double a, double b, double c)
+{
+	intercept_st intercepts;
+	if (a == 0 && b == 0) {
+		intercepts.numIntercepts = 0;
+	} else if (a == 0)
+	{
+		intercepts.numIntercepts = 1;
+		intercepts.intercepts.push_back(div(-1 * c, b));
+	}
+	else
+	{
+		double quadCalc = sub(pow(b, 2),4 * a * c);
+		if (quadCalc < 0)
+		{
+			intercepts.numIntercepts = 0;
+		} else
+		{
+			intercepts.numIntercepts = 2;
+			double val1 = div(-1 * b + sqrt(quadCalc), 2 * a);
+			double val2 = div(sub(-1 * b, sqrt(quadCalc)), 2 * a);
+			intercepts.intercepts.push_back(val1);
+			intercepts.intercepts.push_back(val2);
+		}
+	}
+	return (intercepts);
+}
