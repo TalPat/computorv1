@@ -14,7 +14,8 @@ class Computor
 private:
 	std::string _strInput;
 	std::vector<std::pair<int, float>> reducedVals; //int is degree, float is reduced coeficcient
-	int _degree, _a, _b, _c;
+	int _degree;
+	double _a, _b, _c;
 	double _discriminant;
 	void calcDiscriminant(void);
 	void parseString(void);

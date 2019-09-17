@@ -14,9 +14,7 @@ void Computor::parseString(void)
 	std::vector<std::string> strVec;
 	int equalIndex;
 	int highestDegree = 0;
-
-
-/*00000000000000000000000000*/std::cout << strVec.size() << std::endl;
+	
 
 	if (!std::regex_match(_strInput, rgxValidChar))
 	{
@@ -29,11 +27,6 @@ void Computor::parseString(void)
 		_strInput.erase(0, _strInput.find(" ") + 1);
 	}
 	strVec.push_back(_strInput);
-	
-	for (std::string s : strVec)
-	{
-		std::cout << s << std::endl;
-	}
 
 	for (size_t i = 0; i < strVec.size(); i++)
 	{
@@ -101,7 +94,12 @@ void Computor::displayReduced(void)
 			if (mypair.first == i)
 			{
 				convert << Tmaths::abs(mypair.second);
-				output += ((mypair.second > 0)? "+ " + convert.str() : "- " + convert.str()) + " * X^" + std::to_string(i) + " ";
+				if (reducedVals[0] == mypair)
+				{
+					output += ((mypair.second > 0)? convert.str() : convert.str()) + " * X^" + std::to_string(i) + " ";
+				} else {
+					output += ((mypair.second > 0)? "+ " + convert.str() : "- " + convert.str()) + " * X^" + std::to_string(i) + " ";
+				}
 				convert.str("");
 			}
 		}	
