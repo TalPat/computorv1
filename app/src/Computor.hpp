@@ -5,24 +5,29 @@
 #include <vector>
 #include <regex>
 #include <iostream>
+#include <sstream>
+#include <utility>
 #include "Tmaths.hpp"
 
 class Computor
 {
 private:
 	std::string _strInput;
-	double _a = 0;
-	double _b = 0;
-	double _c = 0;
-	int _degree;
+	std::vector<std::pair<int, float>> reducedVals; //int is degree, float is reduced coeficcient
+	int _degree, _a, _b, _c;
 	double _discriminant;
+	void calcDiscriminant(void);
+	void parseString(void);
+	void displayReduced(void);
+	void displayDisc(void);
+	void displayDegree(void);
+	void displaySolution(void);
+	void setCoeficients(void);
 public:
 	Computor(std::string strInput);
 	~Computor();
 
-	void parseString(void);
-	void calcDiscriminant(double a, double b, double c);
-	double getDiscriminant(void);
+	void compute(void);
 };
 
 #endif
