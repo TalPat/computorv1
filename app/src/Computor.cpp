@@ -51,7 +51,10 @@ void Computor::parseString(void)
 				if (reducedVals[j].first == std::strtol(strVec[i].c_str() + 2, NULL, 10))
 				{
 					sign = (i > 3 && strVec[i - 3] == "-")? -1 * sign: sign;
-					std::stringstream(strVec[i - 2]) >> val;
+					if (i < 2 || strVec[i - 1] != "*")
+						val = 1;
+					else
+						std::stringstream(strVec[i - 2]) >> val;
 					reducedVals[j].second += sign * val;
 					found = true;
 				}
@@ -59,7 +62,10 @@ void Computor::parseString(void)
 			if (!found)
 			{
 				sign = (i > 3 && strVec[i - 3] == "-")? -1 * sign: sign;
-				std::stringstream(strVec[i - 2]) >> val;
+				if (i < 2 || strVec[i - 1] != "*")
+					val = 1;
+				else
+					std::stringstream(strVec[i - 2]) >> val;
 				reducedVals.push_back(std::pair<int, float>(std::strtol(strVec[i].c_str() + 2, NULL, 10), sign * val));
 			}
 		}
@@ -91,7 +97,7 @@ void Computor::displayReduced(void)
 	{
 		for (auto mypair : reducedVals)
 		{
-			if (mypair.first == i)
+			if (mypair.first == i && mypair.second != 0.0)
 			{
 				convert << Tmaths::abs(mypair.second);
 				if (reducedVals[0] == mypair)
@@ -117,11 +123,22 @@ void Computor::displayDisc(void)
 	if (_degree == 2)
 	{
 		std::cout << "Discriminant: " << _discriminant << std::endl;
+		if (_discriminant >= 0)
+			std::cout << "The discriminant is positive" << std::endl;
+		else
+			std::cout << "The discriminant is negative" << std::endl;
 	}
 }
 
 void Computor::displayDegree(void)
 {
+	int highestDegree = 0;
+	for (auto red : reducedVals)
+	{
+		if (red.first > highestDegree && red.second != 0.0)
+			highestDegree = red.first;
+	}
+	_degree = highestDegree;
 	if (reducedVals.size() > 0)
 	{
 		std::cout << "Polynomial degree: " << _degree << std::endl;
@@ -130,15 +147,33 @@ void Computor::displayDegree(void)
 
 void Computor::displaySolution(void)
 {
-	intercept_st intercept = Tmaths::calcIntercept(_a, _b, _c);
-	if (intercept.numIntercepts == 1)
+	if (_degree == 0)
 	{
-		std::cout << "The solution is:" << std::endl << intercept.intercepts[0] << std::endl;
-	}
-	if (intercept.numIntercepts == 2)
+		if (_c == 0)
+			std::cout << "The solution is:" << std::endl << "X is an element of all Real numbers" << std::endl;
+		else
+			std::cout << "The solution is:" << std::endl << "X is unsolveable" << std::endl;
+		
+	} else if (_degree <= 2)
 	{
-		std::cout << intercept.intercepts[0] << std::endl << intercept.intercepts[1] << std::endl;
+		intercept_st intercept = Tmaths::calcIntercept(_a, _b, _c);
+		if (intercept.numIntercepts == 0)
+		{
+			std::cout << "The solution is complex:" << std::endl;
+			std::cout << Tmaths::div(-1 * _b, 2 * _a) << " + " << Tmaths::div(Tmaths::sqrt(_discriminant * -1), 2 * _a) << " * i" << std::endl;
+			std::cout << Tmaths::div(-1 * _b, 2 * _a) << " - " << Tmaths::div(Tmaths::sqrt(_discriminant * -1), 2 * _a) << " * i" << std::endl;
+		} else if (intercept.numIntercepts == 1 || _discriminant == 0)
+		{
+			std::cout << "The solution is:" << std::endl << intercept.intercepts[0] << std::endl;
+		} else if (intercept.numIntercepts == 2)
+		{
+			std::cout << intercept.intercepts[0] << std::endl << intercept.intercepts[1] << std::endl;
+		}
+	} else
+	{
+		std::cout << "The polynomial degree is stricly greater than 2, I can't solve." << std::endl;
 	}
+	
 }
 
 void Computor::compute(void)

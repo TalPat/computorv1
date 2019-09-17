@@ -1,0 +1,31 @@
+Basic
+"8 * X^0 - 6 * X^1 + 0 * X^2 - 5.6 * X^3 = 3 * X^0"
+"5 * X^0 + 4 * X^1 = 4 * X^0"
+"5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0"
+
+Null Coeficient
+"8 * X^0 - X^1 + 0 * X^2 - 5.6 * X^3 = 3 * X^0"
+
+Not whole
+"0.5 * X^0 + 4.2 * X^1 = 4 * X^0"
+
+Negative
+"- 5 * X^0 - 4 * X^1 = - 4 * X^0"
+
+Degree 0
+"5 * X^0 = 5 * X^0"
+
+Impossible equation
+"4 * X^0 = 8 * X^0 "
+
+Degree 1
+"5 * X^0 = 4 * X^0 + 7 * X^1"
+
+Degree 2
+"5 * X^0 + 13 * X^1 + 3 * X^2 = 1 * X^0 + 1 * X^1"
+
+Null discriminant
+"6 * X^0 + 11 * X^1 + 5 * X^2 = 1 * X^0 + 1 * X^1"
+
+Negative discriminant
+"5 * X^0 + 3 * X^1 + 3 * X^2 = 1 * X^0 + 0 * X^1"
