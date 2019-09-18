@@ -2,6 +2,9 @@
 
 Computor::Computor(std::string strInput) : _strInput(strInput)
 {
+	_a = 0;
+	_b = 0;
+	_c = 0;
 }
 
 Computor::~Computor()
@@ -10,7 +13,7 @@ Computor::~Computor()
 
 void Computor::parseString(void)
 {
-	std::regex rgxValidChar("[0-9 .^*-+X]+=");
+	std::regex rgxValidChar("[0-9 .^*+X=\\-]+");
 	std::vector<std::string> strVec;
 	int equalIndex;
 	int highestDegree = 0;
@@ -18,7 +21,7 @@ void Computor::parseString(void)
 
 	if (!std::regex_match(_strInput, rgxValidChar))
 	{
-		// throw ("Invalid input");
+		throw ("Invalid input");
 	}
 
 	while (_strInput.find(" ") != std::string::npos)
@@ -52,7 +55,11 @@ void Computor::parseString(void)
 				{
 					sign = (i > 3 && strVec[i - 3] == "-")? -1 * sign: sign;
 					if (i < 2 || strVec[i - 1] != "*")
+					{
 						val = 1;
+						if (i > 0 && strVec[i - 1] == "-")
+							sign *= -1;
+					}
 					else
 						std::stringstream(strVec[i - 2]) >> val;
 					reducedVals[j].second += sign * val;
@@ -63,7 +70,11 @@ void Computor::parseString(void)
 			{
 				sign = (i > 3 && strVec[i - 3] == "-")? -1 * sign: sign;
 				if (i < 2 || strVec[i - 1] != "*")
+				{
 					val = 1;
+					if (i > 0 && strVec[i - 1] == "-")
+						sign *= -1;
+				}
 				else
 					std::stringstream(strVec[i - 2]) >> val;
 				reducedVals.push_back(std::pair<int, float>(std::strtol(strVec[i].c_str() + 2, NULL, 10), sign * val));
@@ -92,6 +103,14 @@ void Computor::displayReduced(void)
 {
 	std::ostringstream convert;
 	std::string output;
+	int highestDegree = 0;
+
+	for (auto red : reducedVals)
+	{
+		if (red.first > highestDegree && red.second != 0.0)
+			highestDegree = red.first;
+	}
+	_degree = highestDegree;
 	
 	for (size_t i = 0; i <= _degree; i++)
 	{
@@ -100,12 +119,7 @@ void Computor::displayReduced(void)
 			if (mypair.first == i && mypair.second != 0.0)
 			{
 				convert << Tmaths::abs(mypair.second);
-				if (reducedVals[0] == mypair)
-				{
-					output += ((mypair.second > 0)? convert.str() : convert.str()) + " * X^" + std::to_string(i) + " ";
-				} else {
-					output += ((mypair.second > 0)? "+ " + convert.str() : "- " + convert.str()) + " * X^" + std::to_string(i) + " ";
-				}
+				output += ((mypair.second > 0)? "+ " + convert.str() : "- " + convert.str()) + " * X^" + std::to_string(i) + " ";
 				convert.str("");
 			}
 		}	
@@ -132,13 +146,6 @@ void Computor::displayDisc(void)
 
 void Computor::displayDegree(void)
 {
-	int highestDegree = 0;
-	for (auto red : reducedVals)
-	{
-		if (red.first > highestDegree && red.second != 0.0)
-			highestDegree = red.first;
-	}
-	_degree = highestDegree;
 	if (reducedVals.size() > 0)
 	{
 		std::cout << "Polynomial degree: " << _degree << std::endl;
